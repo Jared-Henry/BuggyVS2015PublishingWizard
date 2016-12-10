@@ -1,0 +1,30 @@
+﻿@using System.Data.Entity
+@using MyNamespace
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>My Application</title>
+    </head>
+    <body>
+        @{ 
+            Database.SetInitializer(new DropCreateDatabaseIfModelChanges<MyDbContext>());
+            var db = new MyDbContext("MyDbContextCustomName");
+            var count = 0;
+            db.MyEntities.Add(new MyEntity()
+            {
+                Name = "My Entity: " + DateTime.Now.ToString()
+            });
+            db.SaveChanges();
+            count = db.MyEntities.Count();
+        }
+        <p>
+            There are @count entitities in the database.
+        </p>
+        <ul>
+            @foreach(var entity in db.MyEntities)
+            {
+                <li>@entity.Name</li>
+            }
+        </ul>
+    </body>
+</html>
